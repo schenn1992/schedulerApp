@@ -6,10 +6,10 @@ export default function Button(props) {
    let buttonClass = "button";
 
    if(props.confirm) {
-      buttonClass += " button--confrim";
+      buttonClass += " button--confirm";
    }
 
-   if (props.danger) {
+   if(props.danger) {
       buttonClass += " button--danger";
     }
   
