@@ -1,12 +1,18 @@
 import React from "react";
-
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
-import DayListItem from "../src/components/DayListItem";
-import DayList from "../src/components/DayList";
-import InterviewerList from "../src/components/InterviewerList";
-import InterviewerListItem from "../src/components/InterviewerListItem";
-import Appointment from "../src/components/Appointment/index";
+import DayListItem from "components/DayListItem";
+import DayList from "components/DayList";
+import InterviewerList from "components/InterviewerList";
+import InterviewerListItem from "components/InterviewerListItem";
+import Appointment from "components/Appointment/index";
+import Header from "components/Appointment/Header";
+import Empty from "components/Appointment/Empty";
+import Show from "components/Appointment/Show";
+import Confirm from "components/Appointment/Confirm";
+import Status from "components/Appointment/Status";
+import Error from "components/Appointment/Error";
+
 
 import "index.scss";
 
@@ -133,4 +139,23 @@ storiesOf("Appointment", module)
       backgrounds: [{ name: "white", value: "#fff", default: true }]
     })
   .add("Appointment", () => <Appointment />)
-  .add("Appointment", () => <Appointment time="12pm"/>);
+  .add("Appointment", () => <Appointment time="12pm"/>)
+  .add("Header", () => <Header time="12pm"/>)
+  .add("Empty", () => <Empty onAdd={action("onAdd")}/>)
+  .add("Show", () => (
+    <Show 
+      student="Lydia Miller-Jones" 
+      interviewer={interviewer} 
+      onEdit={action("onEdit")} 
+      onDelete={action("onDelete")}
+    />
+  )) 
+  .add("Confrim", () => (
+    <Confirm 
+      message="Delete the appointment?" 
+      onConfirm={action("onConfirm")}
+      onCancel={action("onCancel")}
+    />
+  ))
+  .add("Status", () => <Status message="Deleting"/>)
+  .add("Error", () => <Error message="Could not delete appointment." onClose={action("onClose")}/>)
