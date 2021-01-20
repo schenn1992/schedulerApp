@@ -12,11 +12,9 @@ import Show from "components/Appointment/Show";
 import Confirm from "components/Appointment/Confirm";
 import Status from "components/Appointment/Status";
 import Error from "components/Appointment/Error";
-
+import Button from "components/Button";
 
 import "index.scss";
-
-import Button from "components/Button";
 
 const days = [
   {
