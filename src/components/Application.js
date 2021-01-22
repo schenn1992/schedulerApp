@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import DayList from "./DayList";
 import Appointment from "components/Appointment";
 import "components/Application.scss";
-import { getAppointmentsForDay, getInterview } from "../helpers/selectors"; 
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "../helpers/selectors"; 
 
 const axios = require('axios');
 
@@ -12,17 +12,52 @@ export default function Application(props) {
     day: "Monday",
     days: [],
     appointments: {},
-    
   });
   
   const dailyAppointments = getAppointmentsForDay(state, state.day);
-  
+  const interviewers = getInterviewersForDay(state, state.day);
   const setDay = (day) => {
-    setState(prev => ({...prev, day}));
+    setState(prev => ({ ...prev, day }));
   }
 
-  const parseAppointments = dailyAppointments.map((appointment) => {
+  //bookInterview allow app to change local state
+  function bookInterview(id, interview) {
+    
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
 
+    const selectedDayName = state.day;
+    let selectedDay = state.days.find((day) => day.name === selectedDayName);
+
+    selectedDay.spots = selectedDay.spots - 1;
+    const days = [...state.days];
+  
+    return axios({
+      method: "put",
+      url: `/api/appointments/${id}`,
+      data: {
+        interview
+      }
+    })
+    .then((response) => {
+      setState((prev) => (
+        {
+          ...prev,
+          appointments,
+          days
+        }
+      ))
+    })
+  }
+  
+  const parseAppointments = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     
     return (
@@ -30,7 +65,9 @@ export default function Application(props) {
         key={appointment.id} 
         id={appointment.id}  
         time={appointment.time}  
-        interview={interview} 
+        interview={interview}
+        interviewers={interviewers}
+        bookInterview={bookInterview}
       />
     );
   });
@@ -51,7 +88,6 @@ export default function Application(props) {
       ))
     });
   }, [])
-
 
   return (
     <main className="layout">
