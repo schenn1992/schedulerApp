@@ -4,6 +4,7 @@ import Header from "./Header";
 import Show from "./Show";
 import Empty from "./Empty";
 import Form from "./Form";
+import Status from "./Status";
 
 import "./styles.scss";
 
@@ -11,6 +12,7 @@ const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING";
+const DELETING = "DELETING";
 
 export default function Appointment(props) {
 
@@ -23,9 +25,17 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
-    
+    transition(SAVING)
     props.bookInterview(props.id, interview).then(() => {
       transition(SHOW)
+    })
+  };
+
+  function onDelete() {
+    transition(DELETING);
+    props.cancelInterview(props.id)
+    .then(() => {
+      transition(EMPTY)
     })
   };
   
@@ -37,6 +47,7 @@ export default function Appointment(props) {
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
+          onDelete={onDelete}
         />
       )}
       {mode === CREATE && (
@@ -46,7 +57,8 @@ export default function Appointment(props) {
           onSave={save}
         />
       )}
-      
+      {mode === SAVING && <Status  /> }
+      {mode === DELETING && <Status  message="Deleting" />}
     </article>
   )
 };
