@@ -33,18 +33,62 @@ export default function Application(props) {
       [id]: appointment
     };
 
-    const selectedDayName = state.day;
-    let selectedDay = state.days.find((day) => day.name === selectedDayName);
-
-    selectedDay.spots = selectedDay.spots - 1;
     const days = [...state.days];
+    // check if there is no appointment for each time slot
+    days.map(day => {
+      day.appointments.map(appointment => {
+        // change the state of spots if new appointment is equal to id
+        // also check if the appointment exists when editing
+        if (id === appointment && !state.appointments[id].interview) {
+          const newDaySpots = day.spots - 1;
+          day.spots = newDaySpots;
+        }
+      })
+    });
   
     return axios({
       method: "put",
       url: `/api/appointments/${id}`,
-      data: {
-        interview
-      }
+      data: appointment
+    })
+    .then((response) => {
+      setState((prev) => (
+        {
+          ...prev,
+          appointments,
+          days
+        }
+      ))
+    })
+  }
+
+  function cancelInterview(id) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+    
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    const days = [...state.days];
+    // check if there is no appointment for each time slot
+    days.map(day => {
+      day.appointments.map(appointment => {
+        //change the state of spots if the new appointment is equal to the id
+        if (id === appointment) {
+          const newDaySpots = day.spots + 1;
+          day.spots = newDaySpots;
+        }
+      })
+    });
+  
+    return axios({
+      method: "delete",
+      url: `/api/appointments/${id}`,
+      data: appointment
     })
     .then((response) => {
       setState((prev) => (
@@ -68,6 +112,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={interviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });
