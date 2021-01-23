@@ -12,6 +12,7 @@ export default function Application(props) {
     day: "Monday",
     days: [],
     appointments: {},
+    interviewers: {}
   });
   
   const dailyAppointments = getAppointmentsForDay(state, state.day);
@@ -38,7 +39,7 @@ export default function Application(props) {
     days.map(day => {
       day.appointments.map(appointment => {
         // change the state of spots if new appointment is equal to id
-        // also check if the appointment exists when editing
+        // and check if the appointment exists when editing
         if (id === appointment && !state.appointments[id].interview) {
           const newDaySpots = day.spots - 1;
           day.spots = newDaySpots;
@@ -102,14 +103,13 @@ export default function Application(props) {
   }
   
   const parseAppointments = dailyAppointments.map((appointment) => {
-    const interview = getInterview(state, appointment.interview);
     
     return (
       <Appointment 
         key={appointment.id} 
         id={appointment.id}  
         time={appointment.time}  
-        interview={interview}
+        interview={getInterview(state, appointment.interview)}
         interviewers={interviewers}
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}
