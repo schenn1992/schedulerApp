@@ -33,6 +33,7 @@ export default function Form(props) {
             onChange={event => 
               setName(event.target.value)
             }
+            data-testid="student-name-input"
           />
         </form> 
         <InterviewerList 
