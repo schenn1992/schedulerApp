@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const axios = require('axios');
+import axios from "axios";
 
 export default function useApplicationData() {
   const [state, setState] = useState({
@@ -47,7 +47,7 @@ export default function useApplicationData() {
     const days = [...state.days];
     // check if there is no appointment for each time slot
     days.map(day => {
-      day.appointments.map(appointment => {
+      return day.appointments.map(appointment => {
         // change the state of spots if new appointment is equal to id
         // and check if the appointment exists when editing
         if (id === appointment && !state.appointments[id].interview) {
@@ -57,11 +57,7 @@ export default function useApplicationData() {
       })
     });
 
-    return axios({
-      method: "put",
-      url: `/api/appointments/${id}`,
-      data: appointment
-    })
+    return axios.put(`/api/appointments/${id}`, appointment)
     .then((response) => {
       setState((prev) => (
         {
@@ -87,7 +83,7 @@ export default function useApplicationData() {
     const days = [...state.days];
     // check if there is no appointment for each time slot
     days.map(day => {
-      day.appointments.map(appointment => {
+      return day.appointments.map(appointment => {
         //change the state of spots if the new appointment is equal to the id
         if (id === appointment) {
           const newDaySpots = day.spots + 1;
@@ -96,11 +92,7 @@ export default function useApplicationData() {
       })
     });
 
-    return axios({
-      method: "delete",
-      url: `/api/appointments/${id}`,
-      data: appointment
-    })
+    return axios.delete(`/api/appointments/${id}`, appointment)
     .then((response) => {
       setState((prev) => (
         {
