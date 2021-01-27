@@ -6,12 +6,9 @@ Interview Scheduler is a Single Page Application for keeping track of students' 
 
 ## Project Stack
 
-<p align="center">
-  Front-end: HTML, SCSS, Javascript, React
-  Back-end: Node.js, Express.js, PostgreSQL
-  Testing: Cypress, React-Testing-Library, Storybook, Jest 
-</p>
-
+* Front-end: HTML, SCSS, Javascript, React
+* Back-end: Node.js, Express.js, PostgreSQL
+* Testing: Cypress, React-Testing-Library, Storybook, Jest 
 
 ## Final Product
 
@@ -43,13 +40,12 @@ npm run storybook
 ```
 
 ## Dependencies
-<p align="center">
-  Axios
-  Classnames 
-  Normalize.css
-  React
-  React-dom
-  React-scripts
-</p>
+*Axios
+*Classnames 
+*Normalize.css
+*React
+*React-dom
+*React-scripts
+
   
  
