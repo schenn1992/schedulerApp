@@ -46,6 +46,18 @@ npm run storybook
 * React
 * React-dom
 * React-scripts
+* Babel/core
+* Storybook/addon-actions
+* Storybook/addon-backgrounds
+* Storybook/addon-links
+* Storybook/addons
+* Storybook/react
+* Testing-library/jest-dom
+* Testing-library/react
+* Testing-library/react-hooks
+* Node-sass
+* Prop-types
+* React-test-renderer
 
   
  
