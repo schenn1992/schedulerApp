@@ -14,7 +14,6 @@ import Status from "components/Appointment/Status";
 import Error from "components/Appointment/Error";
 import Form from "components/Appointment/Form";
 import Button from "components/Button";
-
 import "index.scss";
 
 const days = [

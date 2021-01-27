@@ -1,15 +1,11 @@
 import React from "react";
-
 import { render, cleanup, prettyDOM, getByText, waitForElement, fireEvent, getAllByTestId, getByPlaceholderText, getByAltText, queryByText, queryByAltText } from "@testing-library/react";
-
 import axios from "axios";
-
 import Application from "components/Application";
 
 afterEach(cleanup);
 
 describe("Application", () => {
-
   it("changes the schedule when a new day is selected", async () => {
     const { getByText } = render(<Application />);
     

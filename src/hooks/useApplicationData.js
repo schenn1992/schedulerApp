@@ -45,11 +45,11 @@ export default function useApplicationData() {
     };
 
     const days = [...state.days];
-    // check if there is no appointment for each time slot
+    // check if there is no appointment for each slot
     days.map(day => {
       return day.appointments.map(appointment => {
         // change the state of spots if new appointment is equal to id
-        // and check if the appointment exists when editing
+        // plus check for the appointment exists or not when editing
         if (id === appointment && !state.appointments[id].interview) {
           const newDaySpots = day.spots - 1;
           day.spots = newDaySpots;

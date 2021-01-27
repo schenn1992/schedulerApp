@@ -7,7 +7,6 @@ import Form from "./Form";
 import Status from "./Status";
 import Confirm from "./Confirm";
 import Error from "./Error";
-
 import "./styles.scss";
 
 const EMPTY = "EMPTY";
