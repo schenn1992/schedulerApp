@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import getSpotsForDay from "../helpers/selectors";
 import axios from "axios";
 
 export default function useApplicationData() {
@@ -13,14 +13,6 @@ export default function useApplicationData() {
   //handle selected day
   const setDay = (day) => {
     setState(prev => ({ ...prev, day }));
-  }
-
-  //get available remaining spots of day selected
-  const getSpotsForDay = (day, days, appointments) => {
-    const daySelected = days.find(obj => obj.name === day);
-    const dayAppointments = daySelected.appointments.map(id => appointments[id]);
-    
-    return dayAppointments.filter(appointment => appointment.interview === null).length;
   }
 
   useEffect(() => {
