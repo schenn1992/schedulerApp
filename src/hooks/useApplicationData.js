@@ -10,8 +10,17 @@ export default function useApplicationData() {
     interviewers: {}
   });
 
+  //handle selected day
   const setDay = (day) => {
     setState(prev => ({ ...prev, day }));
+  }
+
+  //get available remaining spots of day selected
+  const getSpotsForDay = (day, days, appointments) => {
+    const daySelected = days.find(obj => obj.name === day);
+    const dayAppointments = daySelected.appointments.map(id => appointments[id]);
+    
+    return dayAppointments.filter(appointment => appointment.interview === null).length;
   }
 
   useEffect(() => {
@@ -44,30 +53,33 @@ export default function useApplicationData() {
       [id]: appointment
     };
 
-    const days = [...state.days];
-    // check if there is no appointment for each slot
-    days.map(day => {
-      return day.appointments.map(appointment => {
-        // change the state of spots if new appointment is equal to id
-        // plus check for the appointment exists or not when editing
-        if (id === appointment && !state.appointments[id].interview) {
-          const newDaySpots = day.spots - 1;
-          day.spots = newDaySpots;
-        }
-      })
+    const spots = getSpotsForDay(state.day, state.days, appointments);
+    
+    const days = state.days.map(day => {
+      if (day.name === state.day) {
+        return { ...day, spots }
+      }
+
+      return day;
     });
 
-    return axios.put(`/api/appointments/${id}`, appointment)
-    .then((response) => {
-      setState((prev) => (
-        {
-          ...prev,
-          appointments,
-          days
-        }
-      ))
-    })
-  }
+    return new Promise((resolve, reject) => { 
+      axios.put(`/api/appointments/${id}`, appointment)
+      .then(() => {
+        setState((prev) => (
+          {
+            ...prev,
+            appointments,
+            days
+          }
+        ))
+        resolve();
+      })
+      .catch(() => {
+        reject()
+      })
+    }); 
+  };
 
   function cancelInterview(id) {
     const appointment = {
@@ -80,28 +92,32 @@ export default function useApplicationData() {
       [id]: appointment
     };
 
-    const days = [...state.days];
-    // check if there is no appointment for each time slot
-    days.map(day => {
-      return day.appointments.map(appointment => {
-        //change the state of spots if the new appointment is equal to the id
-        if (id === appointment) {
-          const newDaySpots = day.spots + 1;
-          day.spots = newDaySpots;
-        }
-      })
+    const spots = getSpotsForDay(state.day, state.days, appointments);
+
+    const days = state.days.map(day => {
+      if (day.name === state.day) {
+        return { ...day, spots }
+      }
+
+      return day;
     });
 
-    return axios.delete(`/api/appointments/${id}`, appointment)
-    .then((response) => {
-      setState((prev) => (
-        {
-          ...prev,
-          appointments,
-          days
-        }
-      ))
-    })
+    return new Promise((resolve, reject) => {
+      axios.delete(`/api/appointments/${id}`, appointment)
+      .then(() => {
+        setState((prev) => (
+          {
+            ...prev,
+            appointments,
+            days
+          }
+        ))
+        resolve();
+      })
+      .catch(() => {
+        reject();
+      })
+    }); 
   }
   return { state, setDay, bookInterview, cancelInterview };
 }
