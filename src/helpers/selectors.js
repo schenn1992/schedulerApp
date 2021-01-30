@@ -32,3 +32,11 @@ export function getInterviewersForDay(state, day) {
   
   return interviewers;
 }
+
+//get available remaining spots of day selected
+export default function getSpotsForDay (day, days, appointments) {
+  const daySelected = days.find(obj => obj.name === day);
+  const dayAppointments = daySelected.appointments.map(id => appointments[id]);
+  
+  return dayAppointments.filter(appointment => appointment.interview === null).length;
+};
