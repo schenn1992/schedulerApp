@@ -1,3 +1,4 @@
+![GitHub top language](https://img.shields.io/github/languages/top/schenn1992/schedulerApp?color=yellow&logo=Javascript&style=for-the-badge)
 # Interview Scheduler
 
 ## About This Project
